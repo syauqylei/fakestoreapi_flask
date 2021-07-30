@@ -5,14 +5,27 @@ from marshmallow import fields, Schema
 
 
 class CategoryModel(db.Model):
-    __tablename__ = 'categories'
+    __tablename__ = 'category'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    product_id = db.relationship('Product', backref='categories', lazy=True)
+    products = db.relationship("ProductModel", backref='category')
 
+    def __init__(self, data):
+        self.name = data.get('name')
 
-class CategorySchema(Schema):
-    id = fields.Int(dump_only=True)
-    name = fields.Str(required=True)
-    product_id = fields.Int(required=True)
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    @staticmethod
+    def getById(index):
+        return CategoryModel.query.get(index)
+
+    @staticmethod
+    def getByProductId(index):
+        return CategoryModel.query.filter_by(product_id=index).first()

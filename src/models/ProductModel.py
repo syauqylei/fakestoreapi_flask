@@ -1,18 +1,17 @@
 import datetime
 from . import db
 from .user import User
+from .CategoryModel import CategoryModel
 from marshmallow import fields, Schema
 
 
 class ProductModel(db.Model):
-    __tablename__ = 'products'
+    __tablename__ = 'product'
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Float, nullable=False)
-    category_id = db.Column(db.Integer,
-                            db.ForeignKey('categories.id'),
-                            nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     description = db.Column(db.Text, nullable=True)
     image = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime)
@@ -21,7 +20,6 @@ class ProductModel(db.Model):
     def __init__(self, data):
         self.title = data.get('title')
         self.price = data.get('price')
-        self.category_id = data.get('category_id')
         self.description = data.get('description')
         self.image = data.get('image')
         self.created_at = datetime.datetime.utcnow()
@@ -53,10 +51,9 @@ class ProductModel(db.Model):
 
 class ProductSchema(Schema):
     id = fields.Int(dump_only=True)
-    title = fields.Str(required=True)
-    price = fields.Float(required=True)
-    category_id = fields.Int(required=True)
-    description = fields.Str(required=True)
-    image = fields.Str(required=True)
-    created_at = fields.Date(dump_only=True)
-    modified_at = fields.Date(dump_only=True)
+    title = fields.Str()
+    price = fields.Float()
+    description = fields.Str()
+    image = fields.Str()
+    created_at = fields.DateTime()
+    modified_at = fields.DateTime()

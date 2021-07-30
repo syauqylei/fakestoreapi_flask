@@ -4,6 +4,8 @@ from .config import app_config
 from .models import db
 from .models.ProductModel import *
 from .models.CategoryModel import *
+from .routes.user_bp import user_bp
+from .routes.product_bp import product_bp
 
 migrate = Migrate()
 
@@ -18,8 +20,8 @@ def create_app(env_name):
     db.init_app(app)
     migrate = Migrate(app, db)
 
-    import os
-    print(os.getenv('DATABASE_URI'))
+    app.register_blueprint(user_bp, url_prefix='/api')
+    app.register_blueprint(product_bp, url_prefix='/api/products')
 
     @app.route('/', methods=['GET'])
     def index():
