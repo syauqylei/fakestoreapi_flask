@@ -13,8 +13,12 @@ def login():
         user = User.query.filter_by(email=data['email']).first()
 
         if user:
-            payload = {'name': user.name, 'email': user.email}
-            token = jwt.encode(payload, SECRET_KEY)
+            payload = {
+                'user_id': user.id,
+                'name': user.name,
+                'email': user.email
+            }
+            token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
             res = {'status': 'success', 'access_token': token}
 
         return jsonify(res), 200

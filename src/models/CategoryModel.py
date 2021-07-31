@@ -23,6 +23,10 @@ class CategoryModel(db.Model):
         db.session.commit()
 
     @staticmethod
+    def get_all():
+        return CategoryModel.query.all()
+
+    @staticmethod
     def getById(index):
         return CategoryModel.query.get(index)
 

@@ -1,8 +1,7 @@
 import datetime
 from . import db
 from .user import User
-from .CategoryModel import CategoryModel
-from marshmallow import fields, Schema
+from src.models.CategoryModel import CategoryModel
 
 
 class ProductModel(db.Model):
@@ -47,13 +46,3 @@ class ProductModel(db.Model):
     @staticmethod
     def get_one(index):
         return ProductModel.query.get(index)
-
-
-class ProductSchema(Schema):
-    id = fields.Int(dump_only=True)
-    title = fields.Str()
-    price = fields.Float()
-    description = fields.Str()
-    image = fields.Str()
-    created_at = fields.DateTime()
-    modified_at = fields.DateTime()
